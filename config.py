@@ -20,6 +20,7 @@ class Config:
     
     API_TITLE = "FB Clone REST API"
     API_VERSION = "v1"
+    API_ROOT = f"api/{API_VERSION}"
     OPENAPI_VERSION = "3.0.3"
     OPENAPI_URL_PREFIX = "/"
     OPENAPI_SWAGGER_UI_PATH = "/docs"
