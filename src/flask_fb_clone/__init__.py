@@ -5,14 +5,15 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from .config import get_config
+from flask_fb_clone.config import get_config
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 
 def create_app(config_name):
-    app = Flask("flask-fb-clone")
+    app = Flask(__name__)
+    
     app.config.from_object(get_config(config_name))
 
     db.init_app(app)

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["flit_core >= 3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "flask-fb-clone"
+version = "0.1"
+description = "Flask FB Clone based on REST API framework"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "Flask==3.1.0",
+    "Flask-Migrate==4.0.7",
+    "flask-smorest==0.45.0",
+    "Flask-SQLAlchemy==3.1.1",
+    "Flask-JWT-Extended==4.7.1",
+    "python-dotenv==1.0.1",
+    "psycopg2-binary==2.9.10"
+]
