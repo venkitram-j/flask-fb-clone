@@ -20,12 +20,22 @@ class Config:
     
     API_TITLE = "FB Clone REST API"
     API_VERSION = "v1"
-    API_ROOT = f"api/{API_VERSION}"
+    API_ROOT = f"/api/{API_VERSION}"
     OPENAPI_VERSION = "3.0.3"
     OPENAPI_URL_PREFIX = "/"
     OPENAPI_SWAGGER_UI_PATH = "/docs"
     OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    JSON_SORT_KEYS = False
+    API_SPEC_OPTIONS = {
+        'components': {
+            "securitySchemes":
+                {
+                    "bearerAuth": {
+                        "type": "http",
+                        "scheme": "bearer",
+                        "bearerFormat": "JWT"
+                    }
+                }
+        }}
 
 
 class TestingConfig(Config):
