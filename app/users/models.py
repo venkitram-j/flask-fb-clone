@@ -2,6 +2,7 @@
 User model.
 """
 from uuid import uuid4
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
@@ -41,3 +42,12 @@ class UserModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+
+
+class TokenBlocklist(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    jti = db.Column(db.String(), nullable=True)
+    create_at = db.Column(db.DateTime(), default=datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<Token {self.jti}>"

@@ -1,14 +1,12 @@
 """
 Resources for user
 """
-
-from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt ,create_access_token
 
 from app import db
-from .models import UserModel
+from .models import UserModel, TokenBlocklist
 from .schemas import UserSchema, UserLoginSchema
 
 
@@ -16,7 +14,7 @@ blp = Blueprint("Users", "users", description="Operations on users")
 
 
 @blp.route("/register")
-class UserRegister(MethodView):
+class UserRegisterView(MethodView):
     
     @blp.arguments(UserSchema)
     def post(self, user_data):
@@ -33,7 +31,7 @@ class UserRegister(MethodView):
         return {"message": "Registered Successfully!"}, 201
 
 @blp.route("/login")
-class UserLogin(MethodView):
+class UserLoginView(MethodView):
     
     @blp.arguments(UserLoginSchema)
     def post(self, user_data):
@@ -46,7 +44,7 @@ class UserLogin(MethodView):
         abort(401, message="Invalid credentials.")
 
 @blp.route("/")
-class UsersList(MethodView):
+class UserListView(MethodView):
     
     @blp.doc(security=[{"bearerAuth": []}])
     @blp.response(200, UserSchema(many=True))
@@ -54,7 +52,7 @@ class UsersList(MethodView):
         return UserModel.query.all()
 
 @blp.route("/<uuid:user_id>")
-class User(MethodView):
+class UserView(MethodView):
     
     @blp.doc(security=[{"bearerAuth": []}])
     @blp.response(200, UserSchema)
@@ -68,3 +66,18 @@ class User(MethodView):
         db.session.delete(user)
         db.session.commit()
         return {"message": "User deleted!"}, 200
+
+@blp.route("/logout")
+class UserLogoutView(MethodView):
+    
+    @blp.doc(security=[{"bearerAuth": []}])
+    def post(self):
+        jwt = get_jwt()
+        jti = jwt['jti']
+        
+        token_b = TokenBlocklist(jti=jti)
+        
+        db.session.add(token_b)
+        db.session.commit()
+        
+        return {"message": f"Logged out successfully!"} , 200
