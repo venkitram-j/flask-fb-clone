@@ -3,7 +3,7 @@ Resources for user
 """
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import get_jwt ,create_access_token
+from flask_jwt_extended import get_jwt, jwt_required, create_access_token
 
 from app import db
 from .models import UserModel, TokenBlocklist
@@ -70,6 +70,7 @@ class UserView(MethodView):
 @blp.route("/logout")
 class UserLogoutView(MethodView):
     
+    @jwt_required()
     @blp.doc(security=[{"bearerAuth": []}])
     def post(self):
         jwt = get_jwt()

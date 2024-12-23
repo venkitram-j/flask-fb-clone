@@ -14,4 +14,5 @@ class UserSchema(Schema):
     first_name = fields.Str(required=True)
     last_name = fields.Str(required=True)
     email = fields.Email(required=True)
+    is_admin = fields.Boolean(load_default=False)
     password = fields.Str(required=True, load_only=True)
